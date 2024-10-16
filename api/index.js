@@ -5,11 +5,10 @@ import userRouter from './routes/user.route.js';
 import authRouter from './routes/auth.route.js';
 import cookieParser from 'cookie-parser';
 import listingRouter from './routes/listing.route.js';
-import cors from 'cors';  // Import CORS package
+import cors from 'cors';  
 
 dotenv.config();
 
-// MongoDB connection
 mongoose.connect(process.env.MONGO)
     .then(() => {
         console.log("Connected to MongoDB!");
@@ -20,17 +19,14 @@ mongoose.connect(process.env.MONGO)
 
 const app = express();
 
-// Middleware
-app.use(cors());  // Enable CORS for all origins
+app.use(cors()); 
 app.use(express.json());
 app.use(cookieParser());
 
-// Routes
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/listing', listingRouter);
 
-// Error handling middleware
 app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
     const message = err.message || "Internal Server Error";
@@ -41,7 +37,6 @@ app.use((err, req, res, next) => {
     });
 });
 
-// Start server after all routes are set
 app.listen(3000, () => {
     console.log("Server is working on port 3000...");
 });

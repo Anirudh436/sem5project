@@ -61,7 +61,7 @@ export default function Header() {
         src={currentUser.avatar} 
         alt="Profile" />
       ) : (
-        <p>Loading...</p> // Show a loader or placeholder while waiting for the image URL
+        <p>Loading...</p> 
       )
     ) : (
       <li className='text-slate-800 hover:underline'>Sign In</li>
