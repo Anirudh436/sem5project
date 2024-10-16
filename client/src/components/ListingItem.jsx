@@ -28,8 +28,8 @@ export default function ListingItem({ listing }) {
           </p>
           <p className='text-slate-500 mt-2 font-semibold '>
             ₹
-            {listing.offer
-              ? listing.discountPrice.toLocaleString('en-IN')
+            {listing?.offer
+              ? listing?.discountedPrice.toLocaleString('en-IN')
               : listing.regularPrice.toLocaleString('en-IN')}
             {listing.type === 'rent' && ' / month'}
           </p>
