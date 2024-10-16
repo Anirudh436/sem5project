@@ -23,11 +23,12 @@ export default function CreateListing() {
     bedrooms: 1,
     bathrooms: 1,
     regularPrice: 50,
-    discountPrice: 0,
+    discountedPrice: 0,
     offer: false,
     parking: false,
     furnished: false,
   });
+  console.log("initial formdata" , formData)
   const [imageUploadError, setImageUploadError] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(false);
@@ -38,8 +39,8 @@ export default function CreateListing() {
       const listingId = params.listingId;
       const res = await fetch(`/api/listing/get/${listingId}`);
       const data = await res.json();
+      console.log("mongoformdata", data)
       if (data.success === false) {
-        console.log(data.message);
         return;
       }
       setFormData(data);
@@ -114,9 +115,7 @@ export default function CreateListing() {
         ...formData,
         type: e.target.id,
       });
-    }
-
-    if (
+    } else if (
       e.target.id === 'parking' ||
       e.target.id === 'furnished' ||
       e.target.id === 'offer'
@@ -125,9 +124,7 @@ export default function CreateListing() {
         ...formData,
         [e.target.id]: e.target.checked,
       });
-    }
-
-    if (
+    } else if (
       e.target.type === 'number' ||
       e.target.type === 'text' ||
       e.target.type === 'textarea'
@@ -137,14 +134,16 @@ export default function CreateListing() {
         [e.target.id]: e.target.value,
       });
     }
-  };
+  
+  }
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (formData.imageUrls.length < 1)
         return setError('You must upload at least one image');
-      if (+formData.regularPrice < +formData.discountPrice)
+      if (+formData.regularPrice < +formData.discountedPrice)
         return setError('Discount price must be lower than regular price');
       setLoading(true);
       setError(false);
@@ -158,6 +157,7 @@ export default function CreateListing() {
           userRef: currentUser._id,
         }),
       });
+      console.log("update",formData)
       const data = await res.json();
       setLoading(false);
       if (data.success === false) {
@@ -306,13 +306,13 @@ export default function CreateListing() {
               <div className='flex items-center gap-2'>
                 <input
                   type='number'
-                  id='discountPrice'
+                  id='discountedPrice'
                   min='0'
                   max='1000000000'
                   required
                   className='p-3 border border-gray-300 rounded-lg'
                   onChange={handleChange}
-                  value={formData.discountPrice}
+                  value={formData.discountedPrice}
                 />
                 <div className='flex flex-col items-center'>
                   <p>Discounted price</p>

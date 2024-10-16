@@ -17,8 +17,8 @@ export default function Profile() {
   const [showListingsError, setShowListingsError] = useState(false);
   const [userListings, setUserListings] = useState([]);
   const dispatch = useDispatch();
- console.log(formData)
   
+
 
   useEffect(() => {
     if (file) {
@@ -115,6 +115,7 @@ const handleShowListings = async () => {
       setShowListingsError(false);
       const res = await fetch(`/api/user/listings/${currentUser._id}`);
       const data = await res.json();
+      console.log(data)
       if (data.success === false) {
           setShowListingsError(true);
           return;
